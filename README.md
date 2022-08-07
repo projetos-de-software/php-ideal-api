@@ -10,7 +10,7 @@ Esse repositório é baseado no artigo - O projeto ideal em PHP.
 Para que seja "o projeto ideal", e isso é bem subjetivo, eu parti de algumas premissas: 
 
 1. Laravel 9
-2. Projeto de uma API com TDD
+2. Projeto de uma **API com TDD**
 3. Estrutura de Teste e QA
 4. Ambiente Docker
 5. IDE - Vscode

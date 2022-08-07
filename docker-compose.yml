@@ -1,0 +1,94 @@
+version: '3'
+
+services:
+
+  # NGINX - estrutura
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 80:80
+    links:
+      # link com o servidor que provê php
+      - webapp
+    networks:
+      - php-network
+    volumes:
+      # Laravel
+      - ./source:/var/www/html
+      # Logs
+      - ./docker/logs/nginx:/var/log/nginx
+      # Sites - Config
+      - ./docker/nginx:/etc/nginx/conf.d
+
+  # Mysql - 8.0
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: unless-stopped
+    user: 1000:1000
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 102030
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+    volumes:
+      # Dados Mysql
+      - ./docker/mysql/data:/var/lib/mysql
+      # Entrypoint - criação de bases
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - php-network
+  
+  # phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: unless-stopped
+    links:
+      - mysql
+    ports:
+      - 8000:80
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+      - PMA_ARBITRARY=1
+    networks:
+      - php-network
+
+  # Redis para o laravel/lumen
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+    networks:
+      - php-network
+  
+  # PHP 8 - Laravel
+  webapp:
+    build:
+      context: .
+      dockerfile: ./docker/php/dockerfile
+    container_name: webapp
+    volumes:
+      # Xdebug - Config
+      - ./docker/php/conf/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      # Error Reporting 
+      - ./docker/php/conf/error.ini:/usr/local/etc/php/conf.d/error_reporting.ini
+      # Aplicação
+      - ./source:/var/www/html
+    ports:
+      # Xdebug 3
+      - 9003:9003
+    networks:
+      - php-network
+    extra_hosts:
+      - host.docker.internal:host-gateway
+  
+networks:
+  php-network:
+    driver: bridge
