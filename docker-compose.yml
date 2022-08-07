@@ -71,9 +71,13 @@ services:
   # PHP 8 - Laravel
   webapp:
     build:
+      args:
+        user: laravel
+        uid: 1000
       context: .
       dockerfile: ./docker/php/dockerfile
     container_name: webapp
+    user: 1000:1000
     volumes:
       # Xdebug - Config
       - ./docker/php/conf/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini

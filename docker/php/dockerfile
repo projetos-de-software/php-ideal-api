@@ -45,4 +45,4 @@ WORKDIR /var/www/html
 
 USER $user
 
-RUN composer install create-project laravel/laravel .
+RUN composer create-project laravel/laravel .
