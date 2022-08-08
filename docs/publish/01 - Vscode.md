@@ -2,4 +2,3 @@
 
 ## Introdução
 
-// TODO: Descrever as extensões para vscode

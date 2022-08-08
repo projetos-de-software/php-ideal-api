@@ -13,6 +13,8 @@ services:
     links:
       # link com o servidor que provê php
       - webapp
+    environment:
+    
     networks:
       - php-network
     volumes:

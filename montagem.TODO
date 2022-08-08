@@ -1,0 +1,13 @@
+projeto:
+    Docker:
+        ☐ TODO: Variáveis de ambiente para NGINX
+        ☐ TODO: Variáveis de ambiente para Laravel
+        ☐ TODO: Variáveis de ambiente para MYSQL
+    CI/CD:
+        ✔ TODO: badges no inicio do repositório. @done(22-08-08 09:41)
+        ☐ TODO: montagem de CI para code quality e testes unitários.
+        ☐ TODO: montagem de deploy.
+        ☐ TODO: Badge de CI
+    docs:
+        ☐ TODO: extensões para vscode.
+        ☐ TODO: fluxo de processo com TDD.
